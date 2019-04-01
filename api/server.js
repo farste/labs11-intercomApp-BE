@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv');
 // var bodyParser = require('body-parser')
 // var jsonParser = bodyParser.json()
 
@@ -8,7 +9,7 @@ const usersRouter = require('./users/usersRouter');
 const groupRouter = require('./groups/groupsRouter');
 const voiceRouter = require('./voice/voiceRouter');
 /* const purchasingAndBillingRouter = require('./purchasingAndBilling/purchasingAndBillingRouter'); */
-
+dotenv.config();
 const db = require('../data/dbConfig.js');
 const server = express();
 
