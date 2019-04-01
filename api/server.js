@@ -7,7 +7,7 @@ const teamRouter = require('./team/teamRouter');
 const usersRouter = require('./users/usersRouter');
 const groupRouter = require('./groups/groupsRouter');
 const voiceRouter = require('./voice/voiceRouter');
-const purchasingAndBillingRouter = require('./purchasingAndBilling/purchasingAndBillingRouter');
+/* const purchasingAndBillingRouter = require('./purchasingAndBilling/purchasingAndBillingRouter'); */
 
 const db = require('../data/dbConfig.js');
 const server = express();
