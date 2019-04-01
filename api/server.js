@@ -19,7 +19,7 @@ server.use('/api/team', teamRouter);
 server.use('/api/users', usersRouter);
 server.use('/api/groups', groupRouter);
 server.use('/api/voice', voiceRouter);
-server.use('/api/purchasingAndBilling', purchasingAndBillingRouter);
+/* server.use('/api/purchasingAndBilling', purchasingAndBillingRouter); */
 
 server.get('/', (req, res) => {
     res.send('Hello World!');
