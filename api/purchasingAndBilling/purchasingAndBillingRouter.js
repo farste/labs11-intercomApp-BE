@@ -1,4 +1,4 @@
-require('dotenv');
+/* require('dotenv');
 const router = require('express').Router();
 const stripe = require("stripe")(process.env.SK_TEST);
 router.use(require("body-parser").text());
@@ -31,4 +31,4 @@ router.post('/charge2', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router; */
