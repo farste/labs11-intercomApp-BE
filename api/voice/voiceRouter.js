@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 
-const {tokenGenerator, voiceResponse} = require('./handler');
+const {tokenGenerator, voiceResponse} = require('./voiceHandler');
 
 const router = new Router();
 
