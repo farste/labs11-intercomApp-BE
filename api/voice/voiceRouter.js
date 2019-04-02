@@ -5,11 +5,30 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const urlencoded = require('body-parser').urlencoded;
 const defaultIdentity = 'alice';
 const AccessToken = require('twilio').jwt.AccessToken;
+const ClientCapability = require('twilio').jwt.ClientCapability;
 const VoiceGrant = AccessToken.VoiceGrant;
 
 router.use(urlencoded({ extended: false }));
 
-function tokenGenerator(request, response) {
+router.get('/accessToken', (request, response) => {
+  const accountSid = process.env.ACCOUNT_SID;
+  const authToken = process.env.AUTH_TOKEN;
+  const appSid = process.env.APP_SID;
+
+  const capability = new ClientCapability({
+    accountSid: accountSid,
+    authToken: authToken,
+  });
+  capability.addScope(
+    new ClientCapability.OutgoingClientScope({ applicationSid: appSid})
+  );
+  capability.addScope(new ClientCapability.IncomingClientScope('joey'));
+  const token = capability.toJwt();
+
+  res.set('Content-Type', 'application/jwt')
+  res.send(token);
+});
+/* function tokenGenerator(request, response) {
   // Parse the identity from the http request
   var identity = null;
   if (request.method == 'POST') {
@@ -45,7 +64,7 @@ function tokenGenerator(request, response) {
   token.identity = identity;
   console.log('Token:' + token.toJwt());
   return response.send(token.toJwt());
-}
+} */
 
 /**
  * Creates an endpoint that can be used in your TwiML App as the Voice Request Url.
