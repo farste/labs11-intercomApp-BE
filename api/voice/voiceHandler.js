@@ -9,6 +9,8 @@ exports.tokenGenerator = function tokenGenerator() {
   const accountSid = process.env.ACCOUNT_SID;
   const authToken = process.env.AUTH_TOKEN;
   const appSid = process.env.APP_SID;
+  const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
+  const outgoingApplicationSid = process.env.APP_SID;
   const capability = new ClientCapability({
     accountSid: accountSid,
     authToken: authToken,
