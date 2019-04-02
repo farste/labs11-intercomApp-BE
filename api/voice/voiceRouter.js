@@ -13,7 +13,6 @@ router.get('/token', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  res.set('Content-Type', 'text/xml');
   res.send(voiceResponse(req.body.To));
 });
 
