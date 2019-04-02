@@ -22,7 +22,6 @@ exports.tokenGenerator = function tokenGenerator() {
   capability.addScope(new ClientCapability.OutgoingClientScope({
     applicationSid: appSid,
     clientName: identity,
-    voiceGrant: voiceGrant,
   }));
 
   // Include identity and token in a JSON response
