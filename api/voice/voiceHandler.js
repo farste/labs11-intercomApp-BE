@@ -1,7 +1,8 @@
 require('dotenv');
 const ClientCapability = require('twilio').jwt.ClientCapability;
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
-
+const AccessToken = require('twilio').jwt.AccessToken;
+const VoiceGrant = AccessToken.VoiceGrant;
 
 exports.tokenGenerator = function tokenGenerator() {
   const identity = 'mee';
@@ -12,11 +13,16 @@ exports.tokenGenerator = function tokenGenerator() {
     accountSid: accountSid,
     authToken: authToken,
   });
+  const voiceGrant = new VoiceGrant({
+    outgoingApplicationSid: outgoingApplicationSid,
+    pushCredentialSid: pushCredSid
+  });
 
   capability.addScope(new ClientCapability.IncomingClientScope(identity));
   capability.addScope(new ClientCapability.OutgoingClientScope({
     applicationSid: appSid,
     clientName: identity,
+    voiceGrant: voiceGrant,
   }));
 
   // Include identity and token in a JSON response
