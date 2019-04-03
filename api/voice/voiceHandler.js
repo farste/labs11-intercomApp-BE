@@ -41,8 +41,7 @@ exports.tokenGenerator = function tokenGenerator() {
   return {
     identity: identity,
     token: capability.toJwt(),
-    generateRTCToken()
-  };
+  }
 };
 
 exports.voiceResponse = function voiceResponse(toNumber) {
