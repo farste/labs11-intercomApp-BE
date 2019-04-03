@@ -39,6 +39,7 @@ exports.tokenGenerator = function tokenGenerator() {
   ); */
   const token = new AccessToken(accountSid, apiKey, apiKeySecret);
   token.addGrant(voiceGrant);
+  token.identity = identity;
   // Include identity and token in a JSON response
   return {
     token: token.toJwt(),
