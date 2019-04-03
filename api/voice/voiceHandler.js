@@ -20,11 +20,17 @@ exports.generateRTCToken = function generateRTCToken() {
 };
 
 exports.tokenGenerator = function tokenGenerator() {
-  const identity = "mee";
-/*   const capability = new ClientCapability({
-    accountSid: accountSid,
-    authToken: authToken
-  });*/
+  const defaultIdentity = "mee";
+  var identity = null;
+  if (request.method == 'POST') {
+    identity = request.body.identity;
+  } else {
+    identity = request.query.identity;
+  }
+
+  if(!identity) {
+    identity = defaultIdentity;
+}
   const voiceGrant = new VoiceGrant({
     outgoingApplicationSid: outgoingApplicationSid,
     pushCredentialSid: pushCredSid
