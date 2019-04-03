@@ -40,7 +40,8 @@ exports.tokenGenerator = function tokenGenerator() {
   // Include identity and token in a JSON response
   return {
     identity: identity,
-    token: capability.toJwt()
+    token: capability.toJwt(),
+    generateRTCToken()
   };
 };
 
