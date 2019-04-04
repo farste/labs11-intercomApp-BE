@@ -52,6 +52,7 @@ exports.makeCall = function makeCall(request, response) {
   if (request.method == 'POST') {
     to = request.body.to;
     console.log('Post:', request.body.to)
+    console.log('Post:', request.body.To)
   } else {
     to = request.query.to;
     console.log('Else:', request.query.to)
