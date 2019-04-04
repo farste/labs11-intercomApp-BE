@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 
-const {tokenGenerator, voiceResponse, generateRTCToken} = require('./voiceHandler');
+const voiceHandler = require('./voiceHandler');
 
 const router = new Router();
 
@@ -9,19 +9,31 @@ const router = new Router();
  * username for the client requesting a token.
  */
 router.get('/token', (req, res) => {
-  res.send(tokenGenerator(req));
+  res.send(voiceHandler.tokenGenerator(req));
 });
 
-router.get('/incoming', function(request, response) {
-  response.send(incoming());
+router.get('/incoming', function(req, res) {
+  res.send(voiceHandler.incoming());
+});
+
+router.post('/incoming', function(req, res) {
+  res.send(voiceHandler.incoming());
 });
 
 router.get('/ntstoken', (req, res) => {
-  res.send(generateNTSToken());
+  res.send(voiceHandler.generateNTSToken());
+});
+
+router.get('/placeCall', (req, res) => {
+  res.send(voiceHandler.placeCall(req, res));
+});
+
+router.post('/placeCall', (req, res) => {
+  res.send(voiceHandler.placeCall(req, res));
 });
 
 router.post('/', (req, res) => {
-  res.send(voiceResponse(req.body.To));
+  res.send(voiceHandler.voiceResponse(req.body.To));
 });
 
 module.exports = router;

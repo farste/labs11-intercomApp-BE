@@ -1,6 +1,6 @@
 require("dotenv");
 const ClientCapability = require("twilio").jwt.ClientCapability;
-const VoiceResponse = require("twilio").twiml.VoiceResponse;
+const Voiceres = require("twilio").twiml.Voiceres;
 const AccessToken = require("twilio").jwt.AccessToken;
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
@@ -40,7 +40,7 @@ exports.tokenGenerator = function tokenGenerator(req) {
 
   const token = new AccessToken(accountSid, apiKey, apiKeySecret);
   token.addGrant(voiceGrant);
-  // Include identity and token in a JSON response
+  // Include identity and token in a JSON res
   return {
     token: token.toJwt(),
     identity: identity,
@@ -48,23 +48,23 @@ exports.tokenGenerator = function tokenGenerator(req) {
 };
 
 function incoming() {
-  const voiceResponse = new VoiceResponse();
-  voiceResponse.say("Congratulations! You have received your first inbound call! Good bye.");
-  console.log('Response:' + voiceResponse.toString());
-  return voiceResponse.toString();
+  const voiceres = new Voiceres();
+  voiceres.say("Congratulations! You have received your first inbound call! Good bye.");
+  console.log('res:' + voiceres.toString());
+  return voiceres.toString();
 }
 
-async function placeCall(request, response) {
+async function placeCall(req, res) {
   // The recipient of the call, a phone number or a client
   var to = null;
-  if (request.method == 'POST') {
-    to = request.body.to;
+  if (req.method == 'POST') {
+    to = req.body.to;
   } else {
-    to = request.query.to;
+    to = req.query.to;
   }
   console.log(to);
   // The fully qualified URL that should be consulted by Twilio when the call connects.
-  var url = request.protocol + '://' + request.get('host') + '/incoming';
+  var url = req.protocol + '://' + req.get('host') + '/incoming';
   console.log(url);
   const accountSid = process.env.ACCOUNT_SID;
   const apiKey = process.env.API_KEY;
@@ -95,12 +95,12 @@ async function placeCall(request, response) {
   }
   console.log(call.sid)
   //call.then(console.log(call.sid));
-  return response.send(call.sid);
+  return res.send(call.sid);
 }
 
-exports.voiceResponse = function voiceResponse(toNumber) {
-  // Create a TwiML voice response
-  const twiml = new VoiceResponse();
+exports.voiceres = function voiceres(toNumber) {
+  // Create a TwiML voice res
+  const twiml = new Voiceres();
 
   if (toNumber) {
     // Wrap the phone number or client name in the appropriate TwiML verb
