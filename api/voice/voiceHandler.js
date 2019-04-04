@@ -12,6 +12,7 @@ const apiKeySecret = process.env.API_KEY_SECRET;
 const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
 const outgoingApplicationSid = process.env.APP_SID;
 
+
 exports.generateNTSToken = function generateNTSToken() {
   client.tokens
     .create()
@@ -52,7 +53,6 @@ exports.makeCall = function makeCall(request, response) {
   } else {
     to = request.query.to;
   }
-
   const voiceResponse = new VoiceResponse();
 
   if (!to) {
@@ -78,10 +78,10 @@ exports.incoming = function incoming() {
 exports.placeCall = async function placeCall(req, res) {
   // The recipient of the call, a phone number or a client
   var to = null;
-  if (req.method == 'POST') {
-    to = req.body.to;
+    if (req.method == 'POST') {
+    to = await req.body.to;
   } else {
-    to = req.query.to;
+    to = await req.query.to;
   }
   console.log(to);
   // The fully qualified URL that should be consulted by Twilio when the call connects.
