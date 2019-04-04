@@ -39,8 +39,9 @@ exports.tokenGenerator = function tokenGenerator(req) {
     pushCredentialSid: pushCredSid
   }); 
 
-  const token = new AccessToken(accountSid, apiKey, apiKeySecret, identity);
+  const token = new AccessToken(accountSid, apiKey, apiKeySecret);
   token.addGrant(voiceGrant);
+  token.identity = identity;
   // Include identity and token in a JSON res
   return token.toJwt();
 };
