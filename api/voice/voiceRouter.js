@@ -24,6 +24,14 @@ router.get('/ntstoken', (req, res) => {
   res.send(voiceHandler.generateNTSToken());
 });
 
+router.get('/makeCall', (req, res) => {
+  res.send(voiceHandler.makeCall(req, res));
+});
+
+router.post('/makeCall', (req, res) => {
+  res.send(voiceHandler.makeCall(req, res));
+});
+
 router.get('/placeCall', (req, res) => {
   res.send(voiceHandler.placeCall(req, res));
 });

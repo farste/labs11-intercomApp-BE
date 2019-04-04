@@ -47,6 +47,30 @@ exports.tokenGenerator = function tokenGenerator(req) {
   }
 };
 
+exports.makeCall = function makeCall(request, response) {
+  // The recipient of the call, a phone number or a client
+  var to = null;
+  if (request.method == 'POST') {
+    to = request.body.to;
+  } else {
+    to = request.query.to;
+  }
+
+  const voiceResponse = new VoiceResponse();
+
+  if (!to) {
+      voiceResponse.say("Congratulations! You have made your first call! Good bye.");
+  } else if (isNumber(to)) {
+      const dial = voiceResponse.dial({callerId : callerNumber});
+      dial.number(to);
+  } else {
+      const dial = voiceResponse.dial({callerId : callerId});
+      dial.client(to);
+  }
+  console.log('Response:' + voiceResponse.toString());
+  return voiceResponse.toString();
+}
+
 exports.incoming = function incoming() {
   const voiceres = new Voiceres();
   voiceres.say("Congratulations! You have received your first inbound call! Good bye.");
@@ -95,7 +119,7 @@ exports.placeCall = async function placeCall(req, res) {
   }
   console.log(call.sid)
   //call.then(console.log(call.sid));
-  return res.send(call.sid);
+  return call.sid;
 }
 
 exports.voiceres = function voiceres(toNumber) {
