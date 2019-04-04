@@ -72,10 +72,10 @@ exports.makeCall = function makeCall(request, response) {
 }
 
 exports.incoming = function incoming() {
-  const voiceres = new Voiceres();
-  voiceres.say("Congratulations! You have received your first inbound call! Good bye.");
-  console.log('res:' + voiceres.toString());
-  return voiceres.toString();
+  const voiceResponse = new VoiceResponse();
+  voiceResponse.say("Congratulations! You have received your first inbound call! Good bye.");
+  console.log('res:' + voiceResponse.toString());
+  return voiceResponse.toString();
 }
 
 exports.placeCall = async function placeCall(req, res) {
@@ -122,7 +122,7 @@ exports.placeCall = async function placeCall(req, res) {
   return call.sid;
 }
 
-exports.voiceres = function voiceres(toNumber) {
+exports.voiceResponse = function voiceResponse(toNumber) {
   // Create a TwiML voice res
   const twiml = new Voiceres();
 
