@@ -1,6 +1,6 @@
 require("dotenv");
 const ClientCapability = require("twilio").jwt.ClientCapability;
-const Voiceres = require("twilio").twiml.Voiceres;
+const VoiceResponse = require("twilio").twiml.VoiceResponse;
 const AccessToken = require("twilio").jwt.AccessToken;
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
@@ -124,7 +124,7 @@ exports.placeCall = async function placeCall(req, res) {
 
 exports.voiceResponse = function voiceResponse(toNumber) {
   // Create a TwiML voice res
-  const twiml = new Voiceres();
+  const twiml = new VoiceResponse();
 
   if (toNumber) {
     // Wrap the phone number or client name in the appropriate TwiML verb
