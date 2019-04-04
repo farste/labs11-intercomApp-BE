@@ -29,7 +29,7 @@ exports.tokenGenerator = function tokenGenerator(req) {
     identity = req.query.identity;
   
   }
-  console.log(req.body);
+  
 
   if(!identity) {
     identity = defaultIdentity;
@@ -48,10 +48,13 @@ exports.tokenGenerator = function tokenGenerator(req) {
 exports.makeCall = function makeCall(request, response) {
   // The recipient of the call, a phone number or a client
   var to = null;
+
   if (request.method == 'POST') {
     to = request.body.to;
+    console.log('Post:', request.body.to)
   } else {
     to = request.query.to;
+    console.log('Else:', request.query.to)
   }
   const voiceResponse = new VoiceResponse();
 
