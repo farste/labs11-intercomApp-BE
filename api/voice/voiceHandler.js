@@ -20,7 +20,7 @@ exports.generateNTSToken = function generateNTSToken() {
 };
 
 exports.tokenGenerator = function tokenGenerator(req) {
-  const defaultIdentity = "mee";
+  const defaultIdentity = Date.now();
   var identity = null;
   if (req.method == 'POST') {
     identity = req.body.identity;
@@ -47,14 +47,14 @@ exports.tokenGenerator = function tokenGenerator(req) {
   }
 };
 
-function incoming() {
+exports.incoming = function incoming() {
   const voiceres = new Voiceres();
   voiceres.say("Congratulations! You have received your first inbound call! Good bye.");
   console.log('res:' + voiceres.toString());
   return voiceres.toString();
 }
 
-async function placeCall(req, res) {
+exports.placeCall = async function placeCall(req, res) {
   // The recipient of the call, a phone number or a client
   var to = null;
   if (req.method == 'POST') {
