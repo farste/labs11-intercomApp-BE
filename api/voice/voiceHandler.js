@@ -11,7 +11,7 @@ const apiKey = process.env.API_KEY;
 const apiKeySecret = process.env.API_KEY_SECRET;
 const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
 const outgoingApplicationSid = process.env.APP_SID;
-
+const callerNumber = process.env.CALLER_ID;
 
 exports.generateNTSToken = function generateNTSToken() {
   client.tokens
