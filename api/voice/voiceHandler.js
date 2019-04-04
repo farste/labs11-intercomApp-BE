@@ -26,7 +26,9 @@ exports.tokenGenerator = function tokenGenerator(req) {
     identity = req.body.identity;
   } else {
     identity = req.query.identity;
+  
   }
+  console.log(req.body);
 
   if(!identity) {
     identity = defaultIdentity;
