@@ -22,10 +22,10 @@ exports.generateRTCToken = function generateRTCToken() {
 exports.tokenGenerator = function tokenGenerator() {
   const defaultIdentity = "mee";
   var identity = null;
-  if (request.method == 'POST') {
-    identity = request.body.identity;
+  if (req.method == 'POST') {
+    identity = req.body.identity;
   } else {
-    identity = request.query.identity;
+    identity = req.query.identity;
   }
 
   if(!identity) {
