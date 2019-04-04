@@ -12,11 +12,11 @@ const apiKeySecret = process.env.API_KEY_SECRET;
 const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
 const outgoingApplicationSid = process.env.APP_SID;
 
-exports.generateRTCToken = function generateRTCToken() {
+exports.generateNTSToken = function generateNTSToken() {
   client.tokens
     .create()
     .then(token => console.log(token.username))
-    .catch(err => console.log("RTC Token err:", err));
+    .catch(err => console.log("NTS Token err:", err));
 };
 
 exports.tokenGenerator = function tokenGenerator(req) {
@@ -38,13 +38,6 @@ exports.tokenGenerator = function tokenGenerator(req) {
     pushCredentialSid: pushCredSid
   }); 
 
-/*   capability.addScope(new ClientCapability.IncomingClientScope(identity));
-  capability.addScope(
-    new ClientCapability.OutgoingClientScope({
-      applicationSid: appSid,
-      clientName: identity,
-    })
-  ); */
   const token = new AccessToken(accountSid, apiKey, apiKeySecret);
   token.addGrant(voiceGrant);
   // Include identity and token in a JSON response
@@ -53,6 +46,57 @@ exports.tokenGenerator = function tokenGenerator(req) {
     identity: identity,
   }
 };
+
+function incoming() {
+  const voiceResponse = new VoiceResponse();
+  voiceResponse.say("Congratulations! You have received your first inbound call! Good bye.");
+  console.log('Response:' + voiceResponse.toString());
+  return voiceResponse.toString();
+}
+
+async function placeCall(request, response) {
+  // The recipient of the call, a phone number or a client
+  var to = null;
+  if (request.method == 'POST') {
+    to = request.body.to;
+  } else {
+    to = request.query.to;
+  }
+  console.log(to);
+  // The fully qualified URL that should be consulted by Twilio when the call connects.
+  var url = request.protocol + '://' + request.get('host') + '/incoming';
+  console.log(url);
+  const accountSid = process.env.ACCOUNT_SID;
+  const apiKey = process.env.API_KEY;
+  const apiSecret = process.env.API_KEY_SECRET;
+  const client = require('twilio')(apiKey, apiSecret, { accountSid: accountSid } );
+
+  if (!to) {
+    console.log("Calling default client:" + defaultIdentity);
+    call = await client.api.calls.create({
+      url: url,
+      to: 'client:' + defaultIdentity,
+      from: callerId,
+    });
+  } else if (isNumber(to)) {
+    console.log("Calling number:" + to);
+    call = await client.api.calls.create({
+      url: url,
+      to: to,
+      from: callerNumber,
+    });
+  } else {
+    console.log("Calling client:" + to);
+    call =  await client.api.calls.create({
+      url: url,
+      to: 'client:' + to,
+      from: callerId,
+    });
+  }
+  console.log(call.sid)
+  //call.then(console.log(call.sid));
+  return response.send(call.sid);
+}
 
 exports.voiceResponse = function voiceResponse(toNumber) {
   // Create a TwiML voice response

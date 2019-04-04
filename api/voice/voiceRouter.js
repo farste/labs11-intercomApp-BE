@@ -12,8 +12,12 @@ router.get('/token', (req, res) => {
   res.send(tokenGenerator(req));
 });
 
-router.get('/rtctoken', (req, res) => {
-  res.send(generateRTCToken());
+router.get('/incoming', function(request, response) {
+  response.send(incoming());
+});
+
+router.get('/ntstoken', (req, res) => {
+  res.send(generateNTSToken());
 });
 
 router.post('/', (req, res) => {
