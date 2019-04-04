@@ -64,7 +64,7 @@ exports.makeCall = function makeCall(request, response) {
       const dial = voiceResponse.dial({callerId : callerNumber});
       dial.number(to);
   } else {
-      const dial = voiceResponse.dial({callerId : callerId});
+      const dial = voiceResponse.dial({callerId : callerNumber});
       dial.client(to);
   }
   console.log('Response:' + voiceResponse.toString());
