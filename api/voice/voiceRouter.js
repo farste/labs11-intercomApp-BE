@@ -9,7 +9,7 @@ const router = new Router();
  * username for the client requesting a token.
  */
 router.get('/token', (req, res) => {
-  res.send(tokenGenerator());
+  res.send(tokenGenerator(req));
 });
 
 router.get('/rtctoken', (req, res) => {

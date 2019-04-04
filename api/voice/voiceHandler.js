@@ -19,7 +19,7 @@ exports.generateRTCToken = function generateRTCToken() {
     .catch(err => console.log("RTC Token err:", err));
 };
 
-exports.tokenGenerator = function tokenGenerator() {
+exports.tokenGenerator = function tokenGenerator(req) {
   const defaultIdentity = "mee";
   var identity = null;
   if (req.method == 'POST') {
