@@ -51,11 +51,10 @@ exports.makeCall = function makeCall(request, response) {
 
   if (request.method == 'POST') {
     to = request.body.to;
-    console.log('Post:', request.params.to)
-    console.log('Post:', request.params.To)
+    console.log('Post:', request.body)
   } else {
     to = request.query.to;
-    console.log('Else:', request.query.to)
+    console.log('Else:', request.query)
   }
   const voiceResponse = new VoiceResponse();
 

@@ -3,7 +3,8 @@ const Router = require('express').Router;
 const voiceHandler = require('./voiceHandler');
 
 const router = new Router();
-
+var bodyParser = require('body-parser')
+router.use(bodyParser())
 /**
  * Generate a Capability Token for a Twilio Client user - it generates a random
  * username for the client requesting a token.
