@@ -41,10 +41,7 @@ exports.tokenGenerator = function tokenGenerator(req) {
   const token = new AccessToken(accountSid, apiKey, apiKeySecret);
   token.addGrant(voiceGrant);
   // Include identity and token in a JSON res
-  return {
-    token: token.toJwt(),
-    identity: identity,
-  }
+  return token.toJwt();
 };
 
 exports.makeCall = function makeCall(request, response) {
