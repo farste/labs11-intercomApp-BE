@@ -166,17 +166,20 @@ function isNumber(to) {
   return false;
 }
 
-exports.joinConference = function joinConference(req, res) {
-  Router.use(urlencoded({ extended: false }));
-  twiml.dial(dialNode => {
-    // If the caller is our MODERATOR, then start the conference when they
-    // join and end the conference when they leave
-      // Otherwise have the caller join as a regular participant
-      dialNode.conference('My Conference');
-    }
-  );
-  res.type('text/xml');
-  res.send(twiml.toString());
+exports.joinConference = function joinConference(request, response) {
+  // Use the Twilio Node.js SDK to build an XML response
+  const twiml = new VoiceResponse();
+
+  // Start with a <Dial> verb
+  const dial = twiml.dial();
+  // If the caller is our MODERATOR, then start the conference when they
+  // join and end the conference when they leave
+    // Otherwise have the caller join as a regular participant
+    dial.conference('My conference');
+
+  // Render the response as XML in reply to the webhook request
+  response.type('text/xml');
+  response.send(twiml.toString());
 };
 
 /**
