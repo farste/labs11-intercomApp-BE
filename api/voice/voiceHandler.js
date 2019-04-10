@@ -167,7 +167,7 @@ function isNumber(to) {
 }
 
 exports.joinConference = function joinConference(req, res) {
-  router.use(urlencoded({ extended: false }));
+  Router.use(urlencoded({ extended: false }));
   twiml.dial(dialNode => {
     // If the caller is our MODERATOR, then start the conference when they
     // join and end the conference when they leave
