@@ -12,6 +12,7 @@ const apiKeySecret = process.env.API_KEY_SECRET;
 const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
 const outgoingApplicationSid = process.env.APP_SID;
 const callerNumber = process.env.CALLER_ID;
+const urlencoded = require('body-parser').urlencoded;
 
 exports.generateNTSToken = function generateNTSToken() {
   client.tokens
@@ -164,6 +165,16 @@ function isNumber(to) {
   console.log("not a number");
   return false;
 }
+
+exports.joinConference = function joinConference(req, res) {
+  router.use(urlencoded({ extended: false }));
+  dialNode.conference(`${req.body.to}`, {
+    startConferenceOnEnter: true,
+    endConferenceOnExit: true,
+  });
+  res.type('text/xml');
+  res.send(twiml.toString());
+};
 
 /**
  * Checks if the given value is valid as phone number

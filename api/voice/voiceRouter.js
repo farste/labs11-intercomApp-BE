@@ -40,6 +40,13 @@ router.get('/placeCall', (req, res) => {
 router.post('/placeCall', (req, res) => {
   res.send(voiceHandler.placeCall(req, res));
 });
+router.get('/joinConference', (req, res) => {
+  res.send(voiceHandler.joinConference(req, res));
+});
+
+router.post('/joinConference', (req, res) => {
+  res.send(voiceHandler.joinConference(req, res));
+});
 
 router.post('/', (req, res) => {
   res.send(voiceHandler.voiceResponse(req.body.To));
