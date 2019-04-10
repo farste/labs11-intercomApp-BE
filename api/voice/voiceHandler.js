@@ -168,10 +168,13 @@ function isNumber(to) {
 
 exports.joinConference = function joinConference(req, res) {
   router.use(urlencoded({ extended: false }));
-  dialNode.conference(`${req.body.to}`, {
-    startConferenceOnEnter: true,
-    endConferenceOnExit: true,
-  });
+  twiml.dial(dialNode => {
+    // If the caller is our MODERATOR, then start the conference when they
+    // join and end the conference when they leave
+      // Otherwise have the caller join as a regular participant
+      dialNode.conference('My Conference');
+    }
+  );
   res.type('text/xml');
   res.send(twiml.toString());
 };
