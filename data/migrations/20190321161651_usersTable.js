@@ -4,6 +4,18 @@ exports.up = function(knex, Promise) {
     return knex.schema.createTable('users', function(tbl) {
         // user id (primary key)
         tbl.increments(); // creates an id (if you don't pass anything here the default name of the column will be 'id'), makes it integer, makes it autoincrement
+        
+        //user stripeId
+        tbl
+        .string('stripeId', 128)
+        .defaultTo(null)
+        // .notNullable()      // commented out to avoid having to assign unique id to mockUsers seed file
+        // .unique()
+        
+        //user twilioSubSID
+        tbl
+        .string('twilioSubSID', 128)
+        .defaultTo(null)
 
         //user first name
         tbl
@@ -12,7 +24,11 @@ exports.up = function(knex, Promise) {
         //user last name
         tbl
             .string('lastName', 128)
-        
+        //user avatar
+        tbl
+            .string('avatar', 256)
+            .defaultTo(null)
+            
         //user display name
         tbl
             .string('displayName', 128)
@@ -44,6 +60,8 @@ exports.up = function(knex, Promise) {
         tbl
             .timestamp('createdAt')
             .defaultTo(knex.fn.now())
+        
+
     })
 };
 
