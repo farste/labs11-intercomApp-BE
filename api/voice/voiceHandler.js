@@ -62,7 +62,7 @@ exports.makeCall = function makeCall(request, response) {
   if (!to) {
       voiceResponse.say("Congratulations! You have made your first call! Good bye.");
   } else if (isNumber(to)) {
-      const dial = voiceResponse.dial.conference(`${request.body.groupName}`);
+      const dial = voiceResponse.dial({callerId : callerNumber});
       dial.number(to);
   } else {
       const dial = voiceResponse.dial({callerId : callerNumber});
