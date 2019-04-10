@@ -172,10 +172,7 @@ exports.joinConference = function joinConference(request, response) {
 
   // Start with a <Dial> verb
   const dial = twiml.dial();
-  // If the caller is our MODERATOR, then start the conference when they
-  // join and end the conference when they leave
-    // Otherwise have the caller join as a regular participant
-    dial.conference('My conference');
+    dial.conference(`${request.body.From}`);
 
   // Render the response as XML in reply to the webhook request
   response.type('text/xml');
