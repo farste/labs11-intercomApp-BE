@@ -90,7 +90,7 @@ exports.placeCall = async function placeCall(req, res) {
   }
   console.log(to);
   // The fully qualified URL that should be consulted by Twilio when the call connects.
-  var url = req.protocol + '://' + req.get('host') + '/incoming';
+  var url = req.protocol + '://' + req.get('host') + '/joinConference';
   console.log(url);
   const accountSid = process.env.ACCOUNT_SID;
   const apiKey = process.env.API_KEY;
