@@ -172,7 +172,7 @@ exports.joinConference = function joinConference(request, response) {
 
   // Start with a <Dial> verb
   const dial = twiml.dial();
-    dial.conference(`${request.body.From}`);
+    dial.conference(`${request.body.to}`);
 
   // Render the response as XML in reply to the webhook request
   response.type('text/xml');
