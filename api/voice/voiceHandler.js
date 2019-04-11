@@ -14,12 +14,12 @@ const outgoingApplicationSid = process.env.APP_SID;
 const callerNumber = process.env.CALLER_ID;
 const urlencoded = require('body-parser').urlencoded;
 
-exports.generateNTSToken = function generateNTSToken() {
+/* exports.generateNTSToken = function generateNTSToken() {
   client.tokens
     .create()
     .then(token => console.log(token.username))
     .catch(err => console.log("NTS Token err:", err));
-};
+}; */
 
 exports.tokenGenerator = function tokenGenerator(req) {
   const defaultIdentity = Date.now();
@@ -73,14 +73,14 @@ exports.makeCall = function makeCall(request, response) {
   return voiceResponse.toString();
 }
 
-exports.incoming = function incoming() {
+/* exports.incoming = function incoming() {
   const voiceResponse = new VoiceResponse();
   voiceResponse.say("Congratulations! You have received your first inbound call! Good bye.");
   console.log('res:' + voiceResponse.toString());
   return voiceResponse.toString();
-}
+} */
 
-exports.placeCall = async function placeCall(req, res) {
+/* exports.placeCall = async function placeCall(req, res) {
   // The recipient of the call, a phone number or a client
   var to = null;
     if (req.method == 'POST') {
@@ -118,11 +118,11 @@ exports.placeCall = async function placeCall(req, res) {
       to: 'client:' + to,
       from: callerId,
     });
-  }
+  } 
   console.log(call.sid)
   //call.then(console.log(call.sid));
   return call.sid;
-}
+}*/
 
 exports.voiceResponse = function voiceResponse(toNumber) {
   // Create a TwiML voice res
@@ -166,7 +166,7 @@ function isNumber(to) {
   return false;
 }
 
-exports.joinConference = function joinConference(request, response) {
+/* exports.joinConference = function joinConference(request, response) {
   // Use the Twilio Node.js SDK to build an XML response
   const twiml = new VoiceResponse();
 
@@ -177,7 +177,7 @@ exports.joinConference = function joinConference(request, response) {
   // Render the response as XML in reply to the webhook request
   response.type('text/xml');
   response.send(twiml.toString());
-};
+}; */
 
 /**
  * Checks if the given value is valid as phone number
