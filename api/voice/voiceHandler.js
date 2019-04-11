@@ -64,10 +64,10 @@ exports.makeCall = function makeCall(request, response) {
       voiceResponse.say("Congratulations! You have made your first call! Good bye.");
   } else if (isNumber(to)) {
       const dial = voiceResponse.dial({callerId : callerNumber});
-      dial.number(to);
+      dial.conference(to);
   } else {
       const dial = voiceResponse.dial({callerId : callerNumber});
-      dial.client(to);
+      dial.conference(to);
   }
   console.log('Response:' + voiceResponse.toString());
   return voiceResponse.toString();
