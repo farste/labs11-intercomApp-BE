@@ -33,6 +33,14 @@ router.post('/makeCall', (req, res) => {
   res.send(voiceHandler.makeCall(req, res));
 });
 
+router.post('/register-binding', (req, res) => {
+  res.send(voiceHandler.registerBinding(req, res));
+});
+
+router.post('/send-notification', (req, res) => {
+  res.send(voiceHandler.sendNotification(req, res));
+});
+
 /* router.get('/placeCall', (req, res) => {
   res.send(voiceHandler.placeCall(req, res));
 });

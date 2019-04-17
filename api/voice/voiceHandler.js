@@ -179,6 +179,70 @@ function isNumber(to) {
   response.send(twiml.toString());
 }; */
 
+
+exports.registerBinding = function registerBinding(req, res) {
+
+
+  client.notify.services(process.env.SERVICE_SID)
+  .bindings
+  .create({
+     identity: req.params.identity,
+     bindingType: req.params.BindingType,
+     address: req.params.Address
+   })
+  .then(binding => console.log(binding.sid));
+
+/*   const twilioClient = context.getTwilioClient();
+  const service = twilioClient.notify.services(
+     context.TWILIO_NOTIFICATION_SERVICE_SID
+ );
+
+ const binding = {
+     'identity':event.identity,
+     'bindingType':event.BindingType,
+     'address':event.Address
+ }
+
+ service.bindings.create(binding).then((binding) => {
+     console.log(binding);
+     // Send a JSON response indicating success
+     callback(null, {message: 'Binding created!'});
+ }).catch((error) => {
+     console.log(error);
+     callback(error, {
+     error: error,
+     message: 'Failed to create binding: ' + error,
+   });
+}); */
+};
+
+exports.sendNotification = function sendNotification(context, event, callback) {
+
+  // Create a reference to the user notification service
+ 
+  const client = context.getTwilioClient();
+ 
+  const service = client.notify.services(
+    context.TWILIO_NOTIFICATION_SERVICE_SID
+  );
+ 
+  const notification = {
+    identity:event.identity,
+    body:event.body
+  };
+ 
+  console.log(notification);
+ 
+  // Send a notification
+  return service.notifications.create(notification).then((message) => {
+    console.log('Notification Message',message);
+    callback(null, "Message sent.");
+  }).catch((error) => {
+    console.log(error);
+    callback(error,null);
+  });
+ };
+
 /**
  * Checks if the given value is valid as phone number
  * @param {Number|String} number
