@@ -182,14 +182,14 @@ function isNumber(to) {
 
 exports.registerBinding = function registerBinding(req, res) {
 
-  console.log(req);
-  console.log(req.params);
+  console.log('req: ', req);
   client.notify.services(process.env.SERVICE_SID)
   .bindings
   .create({
-     identity: req.params.identity,
-     bindingType: req.params.BindingType,
-     address: req.params.Address
+     identity: req.body.identity,
+     address: req.body.Address,
+     bindingType: 'apn',
+     endpoint: 'endpoint_id'
    })
   .then(binding => console.log(binding.sid))
   .catch(err => console.error(err))
