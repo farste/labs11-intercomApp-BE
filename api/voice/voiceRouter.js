@@ -37,7 +37,7 @@ router.post('/register-binding', (req, res) => {
   res.send(voiceHandler.registerBinding(req, res));
 });
 
-router.post('/send-notification', (req, res) => {
+router.get('/send-notification', (req, res) => {
   res.send(voiceHandler.sendNotification(req, res));
 });
 
