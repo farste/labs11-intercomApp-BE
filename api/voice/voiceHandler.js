@@ -182,7 +182,7 @@ function isNumber(to) {
 
 exports.registerBinding = function registerBinding(req, res) {
 
-  console.log('req: ', req);
+  console.log('req.body: ', req.body);
   client.notify.services(process.env.SERVICE_SID)
   .bindings
   .create({
@@ -220,7 +220,8 @@ exports.registerBinding = function registerBinding(req, res) {
 exports.sendNotification = function sendNotification(req, res) {
 
   // Create a reference to the user notification service
- 
+  console.log("params: id", req.params.identity);
+  console.log("body: id", req.body.identity);
   client.notify.services(process.env.SERVICE_SID)
              .notifications
              .create({body: 'Hello Bob', identity: req.params.identity})
