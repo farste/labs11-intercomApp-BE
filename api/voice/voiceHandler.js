@@ -217,31 +217,14 @@ exports.registerBinding = function registerBinding(req, res) {
 }); */
 };
 
-exports.sendNotification = function sendNotification(context, event, callback) {
+exports.sendNotification = function sendNotification(req, res) {
 
   // Create a reference to the user notification service
  
-  const client = context.getTwilioClient();
- 
-  const service = client.notify.services(
-    context.TWILIO_NOTIFICATION_SERVICE_SID
-  );
- 
-  const notification = {
-    identity:event.identity,
-    body:event.body
-  };
- 
-  console.log(notification);
- 
-  // Send a notification
-  return service.notifications.create(notification).then((message) => {
-    console.log('Notification Message',message);
-    callback(null, "Message sent.");
-  }).catch((error) => {
-    console.log(error);
-    callback(error,null);
-  });
+  client.notify.services(process.env.SERVICE_SID)
+             .notifications
+             .create({body: 'Hello Bob', identity: req.body.identity})
+             .then(notification => console.log(notification.sid));
  };
 
 /**
