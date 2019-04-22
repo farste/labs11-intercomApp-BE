@@ -225,12 +225,10 @@ exports.registerBinding = function registerBinding(req, res) {
 exports.sendNotification = function sendNotification(req, res) {
 
   // Create a reference to the user notification service
-  console.log("params: id", req.params);
   console.log("body: id", req.body);
-  console.log("query: id", req.query);
   client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create({body: 'Hello', identity: req.body.FriendlyName})
+             .create({body: req.body.Reason, identity: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
              .catch(err => console.error(err));
  };
