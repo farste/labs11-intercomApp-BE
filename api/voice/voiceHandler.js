@@ -182,7 +182,6 @@ function isNumber(to) {
 
 exports.registerBinding = function registerBinding(req, res) {
 
-  console.log('req.body: ', req.body);
   client.notify.services(process.env.SERVICE_SID)
   .bindings
   .create({
@@ -191,7 +190,7 @@ exports.registerBinding = function registerBinding(req, res) {
      bindingType: 'apn',
      endpoint: 'endpoint_id'
    })
-  .then(binding => console.log(binding.sid))
+  .then(binding => console.log(binding))
   .catch(err => console.error(err))
 /*   const twilioClient = context.getTwilioClient();
   const service = twilioClient.notify.services(
