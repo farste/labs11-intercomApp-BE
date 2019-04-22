@@ -222,6 +222,7 @@ exports.sendNotification = function sendNotification(req, res) {
   // Create a reference to the user notification service
   console.log("params: id", req.params);
   console.log("body: id", req.body);
+  console.log("query: id", req.query);
   client.notify.services(process.env.SERVICE_SID)
              .notifications
              .create({body: 'Hello Bob', identity: req.params.identity})
