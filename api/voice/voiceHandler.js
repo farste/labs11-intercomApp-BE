@@ -194,7 +194,8 @@ exports.registerBinding = function registerBinding(req, res) {
      identity: req.body.identity,
      address: req.body.Address,
      bindingType: 'apn',
-     endpoint: 'endpoint_id'
+     endpoint: 'endpoint_id',
+     tags: tags
    })
   .then(binding => console.log(binding))
   .catch(err => console.error(err))
@@ -228,7 +229,7 @@ exports.sendNotification = function sendNotification(req, res) {
   console.log("body: id", req.body);
   client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create({body: req.body.Reason, identity: req.body.FriendlyName})
+             .create({body: req.StatusCallbackEvent, identity: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
              .catch(err => console.error(err));
  };
