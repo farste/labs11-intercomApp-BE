@@ -188,6 +188,7 @@ function isNumber(to) {
 
 exports.registerBinding = function registerBinding(req, res) {
 
+  console.log('tags: ', req.body.tags)
   client.notify.services(process.env.SERVICE_SID)
   .bindings
   .create({
