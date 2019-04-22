@@ -224,7 +224,7 @@ exports.sendNotification = function sendNotification(req, res) {
   console.log("query: id", req.query);
   client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create({body: 'Hello Bob', identity: req.params.identity})
+             .create({body: 'Hello', identity: req.query.identity})
              .then(notification => console.log(notification.sid))
              .catch(err => console.error(err));
  };
