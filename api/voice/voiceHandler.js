@@ -64,10 +64,16 @@ exports.makeCall = function makeCall(request, response) {
       voiceResponse.say("Congratulations! You have made your first call! Good bye.");
   } else if (isNumber(to)) {
       const dial = voiceResponse.dial({callerId : callerNumber});
-      dial.conference(to);
+      dial.conference({
+        statusCallback: 'https://intercom-be-farste.herokuapp.com/api/voice/send-notification',
+        statusCallbackEvent: 'start end join leave mute hold'
+    }, to);
   } else {
       const dial = voiceResponse.dial({callerId : callerNumber});
-      dial.conference(to);
+      dial.conference({
+        statusCallback: 'https://intercom-be-farste.herokuapp.com/api/voice/send-notification',
+        statusCallbackEvent: 'start end join leave mute hold'
+    }, to);
   }
   console.log('Response:' + voiceResponse.toString());
   return voiceResponse.toString();
