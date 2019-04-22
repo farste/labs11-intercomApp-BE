@@ -229,7 +229,7 @@ exports.sendNotification = function sendNotification(req, res) {
   console.log("body: id", req.body);
   client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create({body: req.StatusCallbackEvent, identity: req.body.FriendlyName})
+             .create({body: req.body.StatusCallbackEvent, identity: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
              .catch(err => console.error(err));
  };
