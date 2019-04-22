@@ -195,7 +195,7 @@ exports.registerBinding = function registerBinding(req, res) {
      address: req.body.Address,
      bindingType: 'apn',
      endpoint: 'endpoint_id',
-     //tags: tags
+     tags: tags
    })
   .then(binding => console.log(binding))
   .catch(err => console.error(err))
