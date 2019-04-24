@@ -179,7 +179,7 @@ exports.sendNotification = async function sendNotification(req, res) {
   // Create a reference to the user notification service
   try {
   console.log("body: id", req.body);
-  group = await JSON.parse(getGroupName(req.body.FriendlyName));
+  group = await getGroupName(req.body.FriendlyName);
   //.catch(console.error('Could not find Group'))
   messageBody = await `A group chat has started at ${group.name}'s chatroom`
   if (req.body.statusCallbackEvent === 'participant-join') {
@@ -201,7 +201,7 @@ exports.sendNotification = async function sendNotification(req, res) {
 
   async function getGroupName(groupId) {
     try {
-    return axios.get(`http://intercom-be.herokuapp.com/api/groups/${groupId}`);
+    return JSON.parse(await axios.get(`http://intercom-be.herokuapp.com/api/groups/${groupId}`));
     } catch (error) {
       console.error('Error getting Group Name');
     }
