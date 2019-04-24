@@ -179,7 +179,7 @@ exports.sendNotification = async function sendNotification(req, res) {
   // Create a reference to the user notification service
   try {
   console.log("body: id", req.body);
-  group = await axios.get(`http://intercom-be.herokuapp.com/api/groups/${req.body.friendlyName}`)
+  group = await axios.get(`http://intercom-be.herokuapp.com/api/groups/${req.body.FriendlyName}`)
   //.catch(console.error('Could not find Group'))
   messagebody = await `A group chat has started at ${group.name}'s chatroom`
   if (req.body.statusCallbackEvent === 'participant-join') {
