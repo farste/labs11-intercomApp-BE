@@ -190,7 +190,7 @@ exports.sendNotification = async function sendNotification(req, res) {
   }
   await client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create(await {body: messageBody, identity: req.body.FriendlyName, tag: req.body.FriendlyName})
+             .create(await {body: messageBody, identity: req.body.FriendlyName, tags: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
              //.catch(err => console.error(err));
  } catch(error){
