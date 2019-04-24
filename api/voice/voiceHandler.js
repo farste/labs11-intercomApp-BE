@@ -13,7 +13,7 @@ const apiKeySecret = process.env.API_KEY_SECRET;
 const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
 const outgoingApplicationSid = process.env.APP_SID;
 const callerNumber = process.env.CALLER_ID;
-const json = require('body-parser').json;
+const urlencoded = require('body-parser').urlencoded;
 
 /* exports.generateNTSToken = function generateNTSToken() {
   client.tokens
@@ -179,7 +179,7 @@ exports.sendNotification = async function sendNotification(req, res) {
   // Create a reference to the user notification service
   try {
   console.log("body: id", req.body);
-  group = await json.parse(getGroupName(req.body.FriendlyName));
+  group = await JSON.parse(getGroupName(req.body.FriendlyName));
   //.catch(console.error('Could not find Group'))
   messageBody = await `A group chat has started at ${group.name}'s chatroom`
   if (req.body.statusCallbackEvent === 'participant-join') {
