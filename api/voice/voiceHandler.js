@@ -179,7 +179,7 @@ exports.sendNotification = async function sendNotification(req, res) {
   // Create a reference to the user notification service
   try {
   console.log("body: id", req.body);
-  group = await axios.get(`http://intercom-be.herokuapp.com/api/groups/${req.body.FriendlyName}`)
+  group = await getGroupName(req.body.FriendlyName);
   //.catch(console.error('Could not find Group'))
   messageBody = await `A group chat has started at ${group.name}'s chatroom`
   if (req.body.statusCallbackEvent === 'participant-join') {
@@ -189,7 +189,7 @@ exports.sendNotification = async function sendNotification(req, res) {
   }
   await client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create({body: messageBody, identity: req.body.FriendlyName, tag: req.body.FriendlyName})
+             .create(await {body: messageBody, identity: req.body.FriendlyName, tag: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
              //.catch(err => console.error(err));
  } catch(error){
@@ -198,6 +198,16 @@ exports.sendNotification = async function sendNotification(req, res) {
  console.log('group: ', group)
  console.log('messageBody: ', messageBody)
   };
+
+  async function getGroupName(groupId) {
+    try {
+    return axios.get(`http://intercom-be.herokuapp.com/api/groups/${groupId}`);
+    } catch (error) {
+      console.error('Error getting Group Name');
+    }
+  }
+
+
 
 /**
  * Checks if the given value is valid as phone number
