@@ -177,8 +177,10 @@ exports.registerBinding = function registerBinding(req, res) {
 exports.sendNotification = async function sendNotification(req, res) {
 
   // Create a reference to the user notification service
+  try {
   console.log("body: id", req.body);
-  group = await axios.get(`http://intercom-be.herokuapp.com/api/groups/${req.body.friendlyName}`).catch(console.error('Could not find Group'))
+  group = await axios.get(`http://intercom-be.herokuapp.com/api/groups/${req.body.friendlyName}`)
+  //.catch(console.error('Could not find Group'))
   messagebody = await `A group chat has started at ${group.name}'s chatroom`
   if (req.body.statusCallbackEvent === 'participant-join') {
     messageBody = await `A user has joined ${group.name}'s chatroom`
@@ -189,8 +191,11 @@ exports.sendNotification = async function sendNotification(req, res) {
              .notifications
              .create({body: messageBody, identity: req.body.FriendlyName, tag: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
-             .catch(err => console.error(err));
- };
+             //.catch(err => console.error(err));
+ } catch(error){
+   console.error(error);
+ }
+  };
 
 /**
  * Checks if the given value is valid as phone number
