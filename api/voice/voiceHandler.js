@@ -1,4 +1,100 @@
 require("dotenv");
+const VoiceResponse = require("twilio").twiml.VoiceResponse;
+const AccessToken = require("twilio").jwt.AccessToken;
+const accountSid = process.env.ACCOUNT_SID;
+const VoiceGrant = AccessToken.VoiceGrant;
+const apiKey = process.env.API_KEY;
+const apiKeySecret = process.env.API_KEY_SECRET;
+const pushCredSid = process.env.PUSH_CREDENTIAL_SID;
+const outgoingApplicationSid = process.env.APP_SID;
+const callerNumber = process.env.CALLER_ID;
+const urlencoded = require('body-parser').urlencoded;
+
+exports.tokenGenerator = function tokenGenerator(req) {
+  const defaultIdentity = Date.now();
+  var identity = null;
+  if (req.method == 'POST') {
+    identity = req.body.identity;
+  } else {
+    identity = req.query.identity;
+  
+  }
+  
+
+  if(!identity) {
+    identity = defaultIdentity;
+}
+  const voiceGrant = new VoiceGrant({
+    outgoingApplicationSid: outgoingApplicationSid,
+    pushCredentialSid: pushCredSid
+  }); 
+
+  const token = new AccessToken(accountSid, apiKey, apiKeySecret);
+  token.addGrant(voiceGrant);
+  token.identity = identity;
+  // Include identity and token in a JSON res
+  return token.toJwt();
+};
+
+exports.makeCall = function makeCall(request, response) {
+  // The recipient of the call, a phone number or a client
+  var to = null;
+
+  if (request.method == 'POST') {
+    to = request.body.to;
+  } else {
+    to = request.query.to;
+  }
+  const voiceResponse = new VoiceResponse();
+
+  if (!to) {
+      voiceResponse.say("No group detected.");
+  }  else {
+      const dial = voiceResponse.dial({callerId : callerNumber});
+      dial.conference({
+        statusCallback: 'https://intercom-be-farste.herokuapp.com/api/voice/send-notification',
+        statusCallbackEvent: 'start end join leave mute hold'
+    }, to);
+  }
+  return voiceResponse.toString();
+}
+
+exports.registerBinding = function registerBinding(req, res) {
+
+  client.notify.services(process.env.SERVICE_SID)
+  .bindings
+  .create({
+     identity: req.body.identity,
+     address: req.body.Address,
+     bindingType: 'apn',
+     endpoint: 'endpoint_id',
+     tags: req.body.tags
+   })
+  .then(binding)
+  .catch(err => console.error(err))
+};
+
+exports.sendNotification = async function sendNotification(req, res) {
+
+  // Create a reference to the user notification service
+  try {
+  console.log("body: id", req.body);
+  messageBody = await `A group chat has started.`
+  if (req.body.statusCallbackEvent == 'participant-join') {
+    messageBody = await `A user has joined ${group}'s chatroom`
+  } else if (req.body.statusCallbackEvent == 'conference-end') {
+    messageBody = await `All users have left ${group}'s chatroom`
+  }
+  await client.notify.services(process.env.SERVICE_SID)
+             .notifications
+             .create(await {body: messageBody, tag: req.body.FriendlyName})
+             .then(notification => console.log(notification.sid))
+ } catch(error){
+   console.error(error);
+ }};
+
+
+/* require("dotenv");
 const axios = require("axios");
 const ClientCapability = require("twilio").jwt.ClientCapability;
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
@@ -15,12 +111,7 @@ const outgoingApplicationSid = process.env.APP_SID;
 const callerNumber = process.env.CALLER_ID;
 const urlencoded = require('body-parser').urlencoded;
 
-/* exports.generateNTSToken = function generateNTSToken() {
-  client.tokens
-    .create()
-    .then(token => console.log(token.username))
-    .catch(err => console.log("NTS Token err:", err));
-}; */
+
 
 exports.tokenGenerator = function tokenGenerator(req) {
   const defaultIdentity = Date.now();
@@ -122,20 +213,6 @@ function isNumber(to) {
   return false;
 }
 
-/* exports.joinConference = function joinConference(request, response) {
-  // Use the Twilio Node.js SDK to build an XML response
-  const twiml = new VoiceResponse();
-
-  // Start with a <Dial> verb
-  const dial = twiml.dial();
-    dial.conference(`${request.body.to}`);
-
-  // Render the response as XML in reply to the webhook request
-  response.type('text/xml');
-  response.send(twiml.toString());
-}; */
-
-
 exports.registerBinding = function registerBinding(req, res) {
 
   console.log('tags: ', req.body.tags)
@@ -150,28 +227,6 @@ exports.registerBinding = function registerBinding(req, res) {
    })
   .then(binding => console.log(binding))
   .catch(err => console.error(err))
-/*   const twilioClient = context.getTwilioClient();
-  const service = twilioClient.notify.services(
-     context.TWILIO_NOTIFICATION_SERVICE_SID
- );
-
- const binding = {
-     'identity':event.identity,
-     'bindingType':event.BindingType,
-     'address':event.Address
- }
-
- service.bindings.create(binding).then((binding) => {
-     console.log(binding);
-     // Send a JSON response indicating success
-     callback(null, {message: 'Binding created!'});
- }).catch((error) => {
-     console.log(error);
-     callback(error, {
-     error: error,
-     message: 'Failed to create binding: ' + error,
-   });
-}); */
 };
 
 exports.sendNotification = async function sendNotification(req, res) {
@@ -200,21 +255,11 @@ exports.sendNotification = async function sendNotification(req, res) {
  console.log('messageBody: ', messageBody)
   };
 
-  /* async function getGroupName(groupId) {
+   async function getGroupName(groupId) {
     try {
     return JSON.parse(await axios.get(`http://intercom-be.herokuapp.com/api/groups/${groupId}`));
     } catch (error) {
       console.error('Error getting Group Name');
     }
-  } */
-
-
-
-/**
- * Checks if the given value is valid as phone number
- * @param {Number|String} number
- * @return {Boolean}
+  }
  */
-function isAValidPhoneNumber(number) {
-  return /^[\d\+\-\(\) ]+$/.test(number);
-}
