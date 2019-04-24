@@ -72,7 +72,7 @@ exports.registerBinding = function registerBinding(req, res) {
      endpoint: 'endpoint_id',
      tags: req.body.tags
    })
-  .then(binding)
+  .then(binding => console.log(binding.sid))
   .catch(err => console.error(err))
 };
 
