@@ -80,7 +80,6 @@ exports.sendNotification = async function sendNotification(req, res) {
 
   // Create a reference to the user notification service
   try {
-  console.log("body: id", req.body);
   messageBody = await `A group chat has started.`
   if (req.body.statusCallbackEvent == 'participant-join') {
     messageBody = await `A user has joined ${group}'s chatroom`
