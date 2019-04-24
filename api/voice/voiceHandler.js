@@ -181,12 +181,12 @@ exports.sendNotification = async function sendNotification(req, res) {
   console.log("body: id", req.body);
   //group = await getGroupName(req.body.FriendlyName);
   //.catch(console.error('Could not find Group'))
-  group.name = 'Test Group';
-  messageBody = await `A group chat has started at ${group.name}'s chatroom`
+  group = 'Test Group';
+  messageBody = await `A group chat has started at ${group}'s chatroom`
   if (req.body.statusCallbackEvent === 'participant-join') {
-    messageBody = await `A user has joined ${group.name}'s chatroom`
+    messageBody = await `A user has joined ${group}'s chatroom`
   } else if (req.body.statusCallbackEvent === 'conference-end') {
-    messageBody = await `All users have left ${group.name}'s chatroom`
+    messageBody = await `All users have left ${group}'s chatroom`
   }
   await client.notify.services(process.env.SERVICE_SID)
              .notifications
