@@ -1,6 +1,7 @@
 require("dotenv");
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
 const AccessToken = require("twilio").jwt.AccessToken;
+const authToken = process.env.AUTH_TOKEN;
 const accountSid = process.env.ACCOUNT_SID;
 const VoiceGrant = AccessToken.VoiceGrant;
 const apiKey = process.env.API_KEY;
