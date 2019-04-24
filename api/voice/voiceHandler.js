@@ -1,4 +1,5 @@
 require("dotenv");
+const axios = require("axios");
 const ClientCapability = require("twilio").jwt.ClientCapability;
 const VoiceResponse = require("twilio").twiml.VoiceResponse;
 const AccessToken = require("twilio").jwt.AccessToken;
@@ -66,69 +67,18 @@ exports.makeCall = function makeCall(request, response) {
       const dial = voiceResponse.dial({callerId : callerNumber});
       dial.conference({
         statusCallback: 'https://intercom-be-farste.herokuapp.com/api/voice/send-notification',
-        statusCallbackEvent: 'start end join leave mute hold'
+        statusCallbackEvent: 'start end join'
     }, to);
   } else {
       const dial = voiceResponse.dial({callerId : callerNumber});
       dial.conference({
         statusCallback: 'https://intercom-be-farste.herokuapp.com/api/voice/send-notification',
-        statusCallbackEvent: 'start end join leave mute hold'
+        statusCallbackEvent: 'start end join'
     }, to);
   }
   console.log('Response:' + voiceResponse.toString());
   return voiceResponse.toString();
 }
-
-/* exports.incoming = function incoming() {
-  const voiceResponse = new VoiceResponse();
-  voiceResponse.say("Congratulations! You have received your first inbound call! Good bye.");
-  console.log('res:' + voiceResponse.toString());
-  return voiceResponse.toString();
-} */
-
-/* exports.placeCall = async function placeCall(req, res) {
-  // The recipient of the call, a phone number or a client
-  var to = null;
-    if (req.method == 'POST') {
-    to = await req.body.to;
-  } else {
-    to = await req.query.to;
-  }
-  console.log(to);
-  // The fully qualified URL that should be consulted by Twilio when the call connects.
-  var url = req.protocol + '://' + req.get('host') + '/joinConference';
-  console.log(url);
-  const accountSid = process.env.ACCOUNT_SID;
-  const apiKey = process.env.API_KEY;
-  const apiSecret = process.env.API_KEY_SECRET;
-  const client = require('twilio')(apiKey, apiSecret, { accountSid: accountSid } );
-
-  if (!to) {
-    console.log("Calling default client:" + defaultIdentity);
-    call = await client.api.calls.create({
-      url: url,
-      to: 'client:' + defaultIdentity,
-      from: callerId,
-    });
-  } else if (isNumber(to)) {
-    console.log("Calling number:" + to);
-    call = await client.api.calls.create({
-      url: url,
-      to: to,
-      from: callerNumber,
-    });
-  } else {
-    console.log("Calling client:" + to);
-    call =  await client.api.calls.create({
-      url: url,
-      to: 'client:' + to,
-      from: callerId,
-    });
-  } 
-  console.log(call.sid)
-  //call.then(console.log(call.sid));
-  return call.sid;
-}*/
 
 exports.voiceResponse = function voiceResponse(toNumber) {
   // Create a TwiML voice res
@@ -196,7 +146,7 @@ exports.registerBinding = function registerBinding(req, res) {
      address: req.body.Address,
      bindingType: 'apn',
      endpoint: 'endpoint_id',
-     tags: req.body.tags
+     tag: req.body.tags
    })
   .then(binding => console.log(binding))
   .catch(err => console.error(err))
@@ -224,13 +174,20 @@ exports.registerBinding = function registerBinding(req, res) {
 }); */
 };
 
-exports.sendNotification = function sendNotification(req, res) {
+exports.sendNotification = async function sendNotification(req, res) {
 
   // Create a reference to the user notification service
   console.log("body: id", req.body);
-  client.notify.services(process.env.SERVICE_SID)
+  group = await axios.get(`http://intercom-be.herokuapp.com/api/groups/${req.body.friendlyName}`).catch(console.err('Could not find Group'))
+  messagebody = await `A group chat has started at ${group.name}'s chatroom`
+  if (req.body.statusCallbackEvent === 'participant-join') {
+    messageBody = await `A user has joined ${group.name}'s chatroom`
+  } else if (req.body.statusCallbackEvent === 'conference-end') {
+    messageBody = await `All users have left ${group.name}'s chatroom`
+  }
+  await client.notify.services(process.env.SERVICE_SID)
              .notifications
-             .create({body: req.body.StatusCallbackEvent, identity: req.body.FriendlyName})
+             .create({body: messageBody, identity: req.body.FriendlyName, tag: req.body.FriendlyName})
              .then(notification => console.log(notification.sid))
              .catch(err => console.error(err));
  };
